@@ -1,0 +1,89 @@
+/*
+Author:
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%   ANMOL GUPTA      %%%%%%%% 
+%%%%%%%%   NIT HAMIRPUR     %%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+*/
+#include<bits/stdc++.h>
+using namespace std;
+#pragma GCC optimize("O3")
+#define pb push_back
+#define debug(x)  cout<<'>'<<#x<<" : "<<x<<endl;
+#define mp make_pair
+#define ff first
+#define ss second
+#define allunique(v) 	v.erase(unique(v.begin(),v.end()),v.end());
+#define MOD 1000000007
+#define MOD9 1000000009
+#define th(n) cout<<n<<endl
+#define gc getchar_unlocked
+#define ms(s, n) memset(s, n, sizeof(s))
+#define prec(n) fixed<<setprecision(n)
+#define eps 0.000001
+#define bolt ios::sync_with_stdio(0)
+#define forr(i,n) for(ll i=0;i<n;i++)
+#define eof (scanf("%d" ,&n))!=EOF
+#define PI acos(-1.0) 
+#define all(v) v.begin(),v.end() 
+#define endl "\n"
+typedef long long ll;
+typedef double db;
+typedef long long ll;
+typedef pair< ll, ll > pll;
+typedef vector< ll > vll;
+typedef map< ll, ll > mll;
+typedef set< ll > sll;
+
+ll n,sum,ans,y,m,d;
+ll cf[10010];
+ll cal(ll a,ll b, ll c)
+{
+	ll total = (a-1)*sum + (a-1)/4;
+	// debug(sum);	
+	if(b!=1){
+		// debug(b);
+		// debug(cf[b-2]);
+		total += cf[b-2];
+	}
+	total += c;
+	return total;
+}
+
+
+int main()
+{
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	cout.tie(NULL);
+	//printf("%I64d", n)
+	ll t;
+	cin>>t;
+	while(t--)
+	{
+		cf[10010] = {0};
+		cin>>n;
+		sum = ans = 0;
+		ll days[n];
+		forr(i,n)
+		{
+			cin>>days[i];
+			sum += days[i];
+			if(i)
+			{
+				cf[i] = cf[i-1] + days[i];
+			}
+			else
+				cf[i] = days[i];
+		}
+		cin>>y>>m>>d;
+		// cout<<cal(3,5,6)<<endl;
+		ans -= cal(y,m,d);
+		// debug(ans);
+		cin>>y>>m>>d;
+		// cout<<cal(y,m,d)<<endl;
+		ans += cal(y,m,d);
+		cout<<ans+1<<endl;
+	}
+}
+

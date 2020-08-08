@@ -1,0 +1,106 @@
+/*
+Author:
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%   ANMOL GUPTA      %%%%%%%% 
+%%%%%%%%   NIT HAMIRPUR     %%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+*/
+#include<bits/stdc++.h>
+using namespace std;
+#pragma GCC optimize("O3")
+#define pb push_back
+// #define debug(x)  cout<<'>'<<#x<<" : "<<x<<endl;
+#define mp make_pair
+#define ff first
+#define ss second
+#define allunique(v) 	v.erase(unique(v.begin(),v.end()),v.end());
+#define MOD 1000000007
+#define MOD9 1000000009
+#define th(n) cout<<n<<endl
+#define gc getchar_unlocked
+#define ms(s, n) memset(s, n, sizeof(s))
+#define prec(n) fixed<<setprecision(n)
+#define eps 0.000001
+#define bolt ios::sync_with_stdio(0)
+#define forr(i,n) for(ll i=0;i<n;i++)
+#define eof (scanf("%d" ,&n))!=EOF
+#define PI acos(-1.0) 
+#define all(v) v.begin(),v.end() 
+#define endl "\n"
+typedef long long ll;
+typedef double db;
+typedef long long ll;
+typedef pair< ll, ll > pll;
+typedef vector< ll > vll;
+typedef map< ll, ll > mll;
+typedef set< ll > sll;
+
+int main()
+{
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	cout.tie(NULL);
+	//printf("%I64d", n)
+	ll n,q,mn,a;
+	cin>>n>>q;
+	// debug(n);
+	ll arr[n];
+	ll ans[63000005];
+	mn = 0;
+	for(int i = 0;i<n;i++)
+	{
+		cin>>arr[i];
+		mn = max(mn,arr[i]);
+		// debug(mn);
+	}
+	sort(arr,arr+n,greater<ll>());
+	queue<ll> q1,q2;
+	for(int i = 0;i<n;i++){
+		q1.push(arr[i]);
+		// debug(arr[i]);
+	}
+
+	ll temp1,temp2;
+	ll i = 1;
+	// ll ans[mn + 3];
+	while(q1.empty() == false and i <= mn)
+	{
+		temp1 = q1.front();
+		if(q2.empty() == false){
+			temp2 = q2.front();
+		}
+		else{
+			temp2 = 0;
+		}
+		// debug(temp1);
+		// debug(temp2);
+		if(temp1 >= temp2)
+		{
+			ans[i] = temp1;
+			q1.pop();
+			q2.push(temp1/2);
+		}
+		else
+		{
+			ans[i] =  temp2;
+			q2.pop();
+			q2.push(temp2/2);
+		}
+		i++;
+	}
+	for(ll j = i;j<=63000000;j++)
+	{
+		temp1 = q2.front();
+		q2.pop();
+		ans[j] = temp1;
+		q2.push(temp1/2);
+	}
+	while(q--)
+	{
+		cin>>a;
+		cout<<ans[a]<<endl;
+	}
+		
+
+}
+

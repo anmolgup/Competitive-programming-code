@@ -1,0 +1,162 @@
+#include<stdio.h>
+#include<math.h>
+#include<malloc.h>
+
+#define inchar getchar_unlocked
+
+inline int inIntPos() 
+{
+	int n = 0;
+	int ch = inchar();
+	while (ch < '0' || ch > '9') ch = inchar();
+	while (ch >= '0' && ch <= '9') 
+	{
+		n = (n << 3) + (n << 1) + (ch - '0');
+		ch = inchar();
+	}
+	return n;
+}
+inline long long inLLPos() 
+{
+	long long n = 0;
+	int ch = inchar();
+	while (ch < '0' || ch > '9') ch = inchar();
+	while (ch >= '0' && ch <= '9') 
+	{
+		n = (n << 3) + (n << 1) + (ch - '0');
+		ch = inchar();
+	}
+	return n;
+}
+
+typedef struct node{
+	int h, r;
+	long long m;
+	struct node *left, *right, *parent;
+}Node;
+
+Node** heap;
+int size=0;
+
+Node* create_node(int x,int y, long long l){
+	Node *n;
+	n = (Node*) malloc(sizeof(Node));
+	n->h = x;
+	n->r = y;
+	n->m = (l-x+y-1)/y;
+	if(n->m < 0){
+		n->m=0;
+	}
+	n->parent=n->left=n->right=NULL;
+	return n;
+}
+
+int get_left(int x){
+	return 2*x+1;
+}
+int get_right(int x){
+	return 2*x+2;
+}
+int get_parent(int x){
+	return (x+1)/2 - 1;
+}
+int swap(int x,int y){
+	Node* temp;
+	temp = heap[x];
+	heap[x] = heap[y];
+	heap[y] = temp;
+}
+
+void insert_node(Node *n){
+	if(size==0){
+		heap[0]= n;
+		size++;
+		return;
+	}
+	int i = size++,j;
+	while(get_parent(i)>=0){
+		j=get_parent(i);
+		if(heap[j]->m > n->m){
+			heap[i]=heap[j];
+			i=j;
+		}
+		else
+			break;
+	}
+	heap[i] = n;
+}
+
+void min_heapify(int loc){
+	int left = get_left(loc);
+	int right = get_right(loc);
+	int min = loc;
+	if(size>left && heap[left]->m < heap[min]->m){
+		min = left;
+	}
+	if(size>right && heap[right]->m < heap[min]->m){
+		min = right;
+	}
+	if(min!=loc){
+		swap(loc,min);
+		min_heapify(min);
+	}
+}
+
+Node* extract_min(){
+	Node * min = heap[0];
+	heap[0] = heap[--size];
+	min_heapify(0);
+	return min;
+}
+int main(){
+	long long w, l, ans;
+	int n, h, r;
+	Node* temp;
+	n = inIntPos();
+	w = inLLPos();
+	l = inLLPos();
+	heap = (Node**) malloc(sizeof(Node*)*n);
+	while(n--){
+		h = inIntPos();
+		r = inIntPos();
+		temp = create_node(h,r,l);
+		insert_node(temp);
+	}
+
+	long long th=0, tr=0;
+	long long cm = heap[0]->m;
+	while(1){
+		while(heap[0]->m <= cm && size>0){
+			temp = extract_min();
+			th += temp->h;
+			tr += temp->r;
+			cm = temp->m;
+			free(temp);
+		}
+		if(size==0){
+			ans = (w-th+tr-1)/tr;
+			if(ans < cm){
+				ans = cm;
+			}
+			break;
+		}
+		else{
+			double chk = (heap[0]->m - 1);
+			chk = chk*tr + th;
+			double chk2 = w;
+			if(chk > chk2){
+				ans = (w-th+tr-1)/tr;
+				if(ans < cm){
+					ans = cm;
+				}
+				break;
+			}
+			else{
+				cm = heap[0]->m;
+			}
+		}
+	}
+	printf("%lld", ans);
+	free(heap);
+	return 0;
+}

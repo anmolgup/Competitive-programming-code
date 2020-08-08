@@ -1,0 +1,38 @@
+//#include "testlib.h"
+//#include <spoj.h>
+
+#include <iostream>
+#include <stdio.h>
+#include <vector>
+#include <string>
+#include <algorithm>
+#include <math.h>
+#include <assert.h>
+#include <time.h>
+#include <memory.h>
+#include <set>
+#include <numeric>
+#include <map>
+#include <queue>
+#include <stack>
+#include <bitset>
+//#include <unordered_map>
+
+using namespace std;
+
+int main() {
+    ios::sync_with_stdio(0);
+    int t;
+    cin >> t;
+    assert(1 <= t && t <= 1000);
+    while (t --> 0) {
+	    int x;
+	    cin >> x;
+	    assert(1 <= x && x <= 1e9);
+	    if (x % 6 == 0)
+	    	cout << "Misha\n";
+	    else
+	    	cout << "Chef\n";
+	}
+    return 0;
+}
